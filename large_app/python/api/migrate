@@ -1,0 +1,30 @@
+#!/bin/bash -e
+cd `dirname $0`/..
+docker_name=migrate-pgdb
+on_exit() {
+    docker kill $docker_name
+    docker rm $docker_name
+}
+trap "on_exit" EXIT
+
+pw=serve123
+username=migrateuser
+pgport=5444
+dbname=migratedb
+
+export PGDB_CONNECTION_STRING="postgresql://$username:$pw@127.0.0.1:$pgport/$dbname"
+echo $PGDB_CONNECTION_STRING
+export FLASK_APP=api
+export FLASK_ENV=development
+
+docker run  -d \
+    -p $pgport:5432 \
+    --name $docker_name \
+    -e POSTGRES_PASSWORD=$pw \
+    -e POSTGRES_DB=$dbname \
+    -e POSTGRES_USER=$username \
+    postgres:11
+
+pipenv run python wait_for_db.py
+pipenv run flask db upgrade
+pipenv run flask db migrate
