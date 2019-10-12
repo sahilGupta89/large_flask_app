@@ -13,7 +13,8 @@ from models import db, docs, marshmallow
 from . import user, login
 from .auth import login_manager
 from .swaggerui import API_URL, SWAGGER_URL, swaggerui_blueprint
-
+import wait_for_db
+import time
 
 current_version = "v1"
 prefix = "/api/{}".format(current_version)
@@ -69,7 +70,6 @@ def create_app():
             "APISPEC_SWAGGER_URL": API_URL,
         }
     )
-
     db.init_app(app)
     marshmallow.init_app(app)
     migrate.init_app(app, db)

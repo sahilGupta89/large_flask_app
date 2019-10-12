@@ -8,5 +8,7 @@ ENV FLASK_APP api
 ENV FLASK_ENV development
 ENV FLASK_RUN_HOST 0.0.0.0
 EXPOSE 5000
+CMD flask db upgrade
+CMD flask db migrate
 CMD ["flask", "run"]
 #CMD gunicorn -b :5000 "api:create_app()" -w 4  -c gunicorn_config.py --forwarded-allow-ips="*"

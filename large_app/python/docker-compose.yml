@@ -3,7 +3,7 @@ services:
   postgres:
     restart: always
     image:
-      postgres:11
+      postgres:12.0-alpine
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -12,11 +12,21 @@ services:
       - ./postgres-data/postgres:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "8080:80"
+    external_links:
+      - postgres:postgres
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+    restart: always
   flaskapp:
     build: .
     depends_on:
       - postgres
     ports:
-      - 5000:5000
+      - "5000:5000"
     volumes:
       - .:/app

@@ -25,6 +25,6 @@ docker run  -d \
     -e POSTGRES_USER=$username \
     postgres:11
 
-pipenv run python wait_for_db.py
-pipenv run flask db upgrade
-pipenv run flask db migrate
+#pipenv run python wait_for_db.py
+#pipenv run flask db upgrade
+#pipenv run flask db migrate

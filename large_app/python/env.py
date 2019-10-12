@@ -1,12 +1,17 @@
 import os
 
+database="devdb"
+user="devuser"
+host="localhost"
+password="password"
+
 VERSION = os.environ.get("VERSION", "n/a")
 DB_CONNECTION_STRING = os.environ.get(
     "DB_CONNECTION_STRING", "mysql+pymysql://localhost:3306/dev"
 )
 
 PGDB_CONNECTION_STRING = os.environ.get(
-    "PGDB_CONNECTION_STRING", "postgresql://localhost:5432/dev"
+    "PGDB_CONNECTION_STRING", "postgresql+psycopg2://devuser:password@localhost:5432/devdb"
 )
 
 JSON_LOGGING = os.environ.get("JSON_LOGGING", "false") in ("1", "true", "True")
