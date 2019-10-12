@@ -2,3 +2,6 @@
 export FLASK_APP=api
 export FLASK_ENV=development
 flask run --host 0.0.0.0 --port 5003
+#python wait_for_db.py
+#flask db init
+#flask db migrate

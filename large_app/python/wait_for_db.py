@@ -2,7 +2,7 @@ import os
 import time
 
 from sqlalchemy import create_engine, exc
-
+print('inside>>>>>>>>>>>>>>')
 while True:
     try:
         if "DB_CONNECTION_STRING" in os.environ:
