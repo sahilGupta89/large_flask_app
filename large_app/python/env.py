@@ -11,7 +11,7 @@ DB_CONNECTION_STRING = os.environ.get(
 )
 
 PGDB_CONNECTION_STRING = os.environ.get(
-    "PGDB_CONNECTION_STRING", "postgresql+psycopg2://devuser:password@localhost:5432/devdb"
+    "PGDB_CONNECTION_STRING", "postgresql+psycopg2://user_db:password@localhost:5432/user_db"
 )
 
 JSON_LOGGING = os.environ.get("JSON_LOGGING", "false") in ("1", "true", "True")
