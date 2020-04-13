@@ -38,3 +38,7 @@ class LoginSchema(ma.Schema):
     auth_type = ma.String(required=True)
     username = ma.String(required=True)
     password = ma.String(required=True)
+
+
+class IdResultSchema(ma.Schema):
+    id = ma.Integer(required=True)

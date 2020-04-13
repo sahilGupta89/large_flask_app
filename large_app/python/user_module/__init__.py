@@ -1,6 +1,7 @@
 from apispec import APISpec
 from apispec.ext.marshmallow import MarshmallowPlugin
 from flask import Flask, jsonify
+from flask_migrate import Migrate, MigrateCommand
 
 import env
 import loggers
@@ -44,6 +45,7 @@ def create_app():
         }
     )
     db.init_app(app)
+    migrate = Migrate(app, db)
     marshmallow.init_app(app)
 
     app.register_blueprint(user.blueprint, url_prefix=prefix)

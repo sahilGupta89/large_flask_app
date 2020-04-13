@@ -4,7 +4,7 @@ from flask_login import current_user, login_required
 
 # from auth0 import AuthError, management_api
 from user_module.models import db, User
-from user_module.models.schemas import UserSchema
+from user_module.models.schemas import UserSchema, IdResultSchema
 from ..spec import docer, not_implemented
 
 
@@ -12,18 +12,17 @@ doc = docer("user")
 
 
 class UserResource(MethodResource):
-    @login_required
+    # @login_required
     @marshal_with(UserSchema, code=200, description="A user")
-    @doc(description="Get the current logged in user", stub=False)
+    @doc(description="Get the current logged in user", login_required=False, stub=False)
     def get(self):
-        user = User.query.get(current_user.id)
-
-        return user
+        user = User.query.all()
+        return user[0]
 
     @use_kwargs(UserSchema)
-    # @marshal_with(
-    #     IdResultSchema, code=200, description="The id of the created user"
-    # )
+    @marshal_with(
+        IdResultSchema, code=200, description="The id of the created user"
+    )
     @marshal_with(None, code=409, description="User already exists")
     @marshal_with(None, code=429, description="Too many requests")
     @marshal_with(
@@ -45,43 +44,6 @@ class UserResource(MethodResource):
     )
     def post(self, **kwargs):
         user = User(**kwargs)
-
-        # if user.exists():
-        #     raise AuthError(
-        #         error={
-        #             "message": "User already exists",
-        #             "error": "BadRequest",
-        #         },
-        #         status_code=409,
-        #     )
-        #
-        # rauth = request.authorization
-        #
-        # if not rauth:
-        #     raise AuthError(
-        #         error={
-        #             "message": (
-        #                 "missing username/password basic Authorization "
-        #                 "http header"
-        #             ),
-        #             "error": "BadRequest",
-        #         },
-        #         status_code=400,
-        #     )
-        #
-        # username = rauth["username"]
-        # password = rauth["password"]
-        #
-        # if username != user.email:
-        #     raise AuthError(
-        #         error={
-        #             "message": "Username and email must be the same",
-        #             "error": "BadRequest",
-        #         },
-        #         status_code=400,
-        #     )
-        # auth0_user = management_api.create_user(user, password)
-        # user.add_mapping(auth0_user["user_id"])
         with db as session:
             session.add(user)
             session.commit()
